@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import Item from '../components/Item.vue'
-import api from '../api/api'
+import Item from "../components/Item.vue";
 
 export default {
   components: {
     Item
   }
-}
+};
 </script>

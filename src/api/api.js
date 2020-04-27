@@ -1,48 +1,51 @@
-import Firebase from 'firebase/app'
-import 'firebase/database'
+import Firebase from "firebase/app";
+import "firebase/database";
 
 Firebase.initializeApp({
-  databaseURL: 'https://hacker-news.firebaseio.com'
-})
+  databaseURL: "https://hacker-news.firebaseio.com"
+});
 
-const api = Firebase.database().ref('/v0')
+const api = Firebase.database().ref("/v0");
 
-function fetch (child) {
-  const cache = api.cachedItems
+function fetch(child) {
+  const cache = api.cachedItems;
   if (cache && cache.has(child)) {
-    return Promise.resolve(cache.get(child))
+    return Promise.resolve(cache.get(child));
   } else {
     return new Promise((resolve, reject) => {
-      api.child(child).once('value', snapshot => {
-        const val = snapshot.val()
-        // mark the timestamp when this item is cached
-        if (val) val.__lastUpdated = Date.now()
-        cache && cache.set(child, val)
-        resolve(val)
-      }, reject)
-    })
+      api.child(child).once(
+        "value",
+        snapshot => {
+          const val = snapshot.val();
+          // mark the timestamp when this item is cached
+          if (val) val.__lastUpdated = Date.now();
+          cache && cache.set(child, val);
+          resolve(val);
+        },
+        reject
+      );
+    });
   }
 }
 
-export function fetchListData (type) {
-  return fetchIdsByType(type)
-    .then((ids) => fetchItems(ids))
+export function fetchListData(type) {
+  return fetchIdsByType(type).then(ids => fetchItems(ids));
 }
 
-export function fetchIdsByType (type) {
+export function fetchIdsByType(type) {
   return api.cachedIds && api.cachedIds[type]
     ? Promise.resolve(api.cachedIds[type])
-    : fetch(`${type}stories`)
+    : fetch(`${type}stories`);
 }
 
-export function fetchItem (id) {
-  return fetch(`item/${id}`)
+export function fetchItem(id) {
+  return fetch(`item/${id}`);
 }
 
-export function fetchItems (ids) {
-  return Promise.all(ids.map(id => fetchItem(id)))
+export function fetchItems(ids) {
+  return Promise.all(ids.map(id => fetchItem(id)));
 }
 
-export function fetchUser (id) {
-  return fetch(`user/${id}`)
+export function fetchUser(id) {
+  return fetch(`user/${id}`);
 }
