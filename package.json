@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "jest",
+    "test:unit:watch": "jest --watch",
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
     "test": "npm run lint && npm run test:unit"
   },
@@ -15,12 +16,12 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "latest",
+    "@vue/cli-plugin-babel": "^4.3.1",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-service": "latest",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "^1.0.0-beta.33",
-    "babel-core": "latest",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.4.0",
     "cross-env": "latest",
@@ -29,7 +30,9 @@
     "eslint-plugin-vue": "^6.2.2",
     "jest": "^25.4.0",
     "lint-staged": "^9.5.0",
+    "node-sass": "^4.14.0",
     "prettier": "^1.19.1",
+    "sass-loader": "^8.0.2",
     "vue-jest": "^3.0.5",
     "vue-template-compiler": "latest"
   },
