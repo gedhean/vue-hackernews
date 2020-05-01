@@ -4,7 +4,8 @@ import { shallowMount } from "@vue/test-utils";
 const item = {
   title: "news-title",
   author: "jedi",
-  url: "http://www.example.com/news"
+  url: "http://www.example.com/news",
+  score: 10
 };
 
 describe("Item.vue", () => {
@@ -18,6 +19,12 @@ describe("Item.vue", () => {
     const wrapper = shallowMount(Item, { propsData: { item } });
 
     expect(wrapper.text()).toContain(item.author);
+  });
+
+  test("render prop item.score", () => {
+    const wrapper = shallowMount(Item, { propsData: { item } });
+
+    expect(wrapper.text()).toContain(item.score);
   });
 
   test("render a link to prop item.url with text item.title", () => {

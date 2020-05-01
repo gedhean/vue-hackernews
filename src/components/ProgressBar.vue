@@ -24,5 +24,7 @@ export default {
   left: 0px;
   background-color: orange;
   z-index: 2;
+  overflow: hidden;
+  max-width: 100%;
 }
 </style>
