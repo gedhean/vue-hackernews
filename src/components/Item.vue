@@ -12,6 +12,9 @@
 export default {
   props: {
     item: Object
+  },
+  beforeMount() {
+    this.$bar?.start();
   }
 };
 </script>

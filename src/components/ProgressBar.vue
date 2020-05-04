@@ -1,17 +1,37 @@
 <template>
-  <div class="progress-bar" :style="styles"></div>
+  <div class="progress-bar" :style="style"></div>
 </template>
 
 <script>
 export default {
-  props: {
-    progress: {
-      default: 0
-    }
+  data() {
+    return {
+      percent: 0,
+      hidden: true
+    };
   },
   computed: {
-    styles() {
-      return { width: this.progress + "%" };
+    style() {
+      return {
+        width: this.percent + "%",
+        display: this.hidden ? "none" : "block"
+      };
+    }
+  },
+  methods: {
+    start() {
+      this.percent = 0;
+      this.hidden = false;
+
+      this.timerId = setInterval(() => {
+        this.percent++;
+      }, 100);
+    },
+    finish() {
+      this.percent = 100;
+      this.hidden = true;
+
+      clearInterval(this.timerId);
     }
   }
 };

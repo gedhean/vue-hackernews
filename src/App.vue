@@ -1,18 +1,16 @@
 <template>
   <div id="app" class="container">
-    <progress-bar progress="50" />
+    <!-- <progress-bar progress="50" /> -->
     <item-list />
   </div>
 </template>
 
 <script>
 import ItemList from "./views/ItemList.vue";
-import ProgressBar from "./components/ProgressBar.vue";
 
 export default {
   components: {
-    ItemList,
-    ProgressBar
+    ItemList
   }
 };
 </script>

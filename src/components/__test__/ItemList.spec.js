@@ -31,4 +31,15 @@ describe("ItemList.vue", () => {
       expect(item.props().item).toBe(window.items[idx]);
     });
   });
+
+  // TODO: figure out why mount is calling beforeMount hook twice
+  test("calls $bar.start on load", () => {
+    const $bar = {
+      start: jest.fn(),
+      finish: () => {}
+    };
+
+    mount(ItemList, { mocks: { $bar } });
+    expect($bar.start).toHaveBeenCalled();
+  });
 });
