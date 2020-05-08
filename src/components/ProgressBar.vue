@@ -1,5 +1,7 @@
 <template>
-  <div class="progress-bar" :style="style"></div>
+  <div :class="['progress-bar', { error: error }]" :style="style">
+    {{ error ? "Failed to fetch Hacker News data" : "" }}
+  </div>
 </template>
 
 <script>
@@ -7,7 +9,8 @@ export default {
   data() {
     return {
       percent: 0,
-      hidden: true
+      hidden: true,
+      error: false
     };
   },
   computed: {
@@ -32,6 +35,10 @@ export default {
       this.hidden = true;
 
       clearInterval(this.timerId);
+    },
+    fail() {
+      this.error = true;
+      this.percent = 100;
     }
   }
 };
@@ -46,5 +53,11 @@ export default {
   z-index: 2;
   overflow: hidden;
   max-width: 100%;
+}
+
+.error {
+  color: #000;
+  text-align: center;
+  background-color: rgb(240, 52, 52);
 }
 </style>

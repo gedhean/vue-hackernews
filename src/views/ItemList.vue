@@ -5,14 +5,29 @@
 </template>
 <script>
 import Item from "./../components/Item.vue";
+import { fetchListData } from "../api/api";
+
 export default {
   components: {
     Item
   },
+  beforeMount() {
+    this.loadItems();
+  },
   data() {
     return {
-      items: window.items
+      items: []
     };
+  },
+  methods: {
+    loadItems() {
+      this.$bar?.start();
+
+      return fetchListData("top")
+        .then(items => (this.items = items))
+        .then(() => this.$bar?.finish())
+        .catch(() => this.$bar?.fail());
+    }
   }
 };
 </script>

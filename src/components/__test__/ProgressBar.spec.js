@@ -87,4 +87,44 @@ describe("ProgressBar.vue", () => {
 
     expect(clearIntervalSpy).toHaveBeenCalledWith(wrapper.vm.timerId);
   });
+
+  test("add error class when fail method is called", async () => {
+    expect.assertions(1);
+    const wrapper = shallowMount(ProgressBar);
+
+    wrapper.vm.start();
+    wrapper.vm.fail();
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.classes()).toContain("error");
+  });
+
+  test("call fail set width to 100%", async () => {
+    expect.assertions(1);
+    const wrapper = shallowMount(ProgressBar);
+
+    wrapper.vm.start();
+    wrapper.vm.fail();
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.element.style.width).toBe("100%");
+  });
+
+  test("display error msg when fail is called", async () => {
+    expect.assertions(2);
+    const wrapper = shallowMount(ProgressBar);
+
+    // Ensure msg is empty before fail
+    expect(wrapper.text()).toContain("");
+
+    wrapper.vm.start();
+    wrapper.vm.fail();
+
+    await wrapper.vm.$nextTick();
+
+    // Assert show msg after fail
+    expect(wrapper.text()).toContain("Failed to fetch Hacker News data");
+  });
 });

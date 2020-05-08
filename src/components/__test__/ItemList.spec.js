@@ -1,24 +1,33 @@
+import flushPromises from "flush-promises";
+import { mount, shallowMount } from "@vue/test-utils";
+
 import Item from "./../Item.vue";
 import ItemList from "./../../views/ItemList.vue";
-import { mount } from "@vue/test-utils";
+import { fetchListData } from "../../api/api.js";
+
+jest.mock("../../api/api.js");
 
 describe("ItemList.vue", () => {
-  test("render all window.items (1) as Item components", () => {
-    window.items = [{}];
-    const wrapper = mount(ItemList);
+  test("render an Item components for each item", async () => {
+    expect.assertions(4);
+    const $bar = {
+      start: jest.fn(),
+      finish: () => {}
+    };
+    const items = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    fetchListData.mockResolvedValueOnce(items);
+
+    const wrapper = mount(ItemList, { mocks: { $bar } });
+
+    await flushPromises();
 
     const Items = wrapper.findAll(Item);
 
-    expect(Items).toHaveLength(window.items.length);
-  });
+    expect(Items).toHaveLength(items.length);
 
-  test("render all window.items (2) as Item components", () => {
-    window.items = [{}, {}, {}];
-    const wrapper = mount(ItemList);
-
-    const Items = wrapper.findAll(Item);
-
-    expect(Items).toHaveLength(window.items.length);
+    Items.wrappers.forEach((wrapper, idx) => {
+      expect(wrapper.vm.item).toBe(items[idx]);
+    });
   });
 
   test("Item children receive right prop.item", () => {
@@ -41,5 +50,35 @@ describe("ItemList.vue", () => {
 
     mount(ItemList, { mocks: { $bar } });
     expect($bar.start).toHaveBeenCalled();
+  });
+
+  test("calls $bar.finish when load data successful", async () => {
+    expect.assertions(1);
+    const $bar = {
+      start: () => {},
+      finish: jest.fn()
+    };
+
+    shallowMount(ItemList, { mocks: { $bar } });
+
+    await flushPromises();
+
+    expect($bar.finish).toHaveBeenCalled();
+  });
+
+  test("calls $bar.fail when load data unsuccessful", async () => {
+    expect.assertions(1);
+    const $bar = {
+      start: () => {},
+      fail: jest.fn()
+    };
+    // Ensue the fetch fails
+    fetchListData.mockRejectedValueOnce();
+
+    shallowMount(ItemList, { mocks: { $bar } });
+
+    await flushPromises();
+
+    expect($bar.fail).toHaveBeenCalled();
   });
 });
