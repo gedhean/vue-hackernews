@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "firebase": "latest",
-    "vue": "latest"
+    "vue": "latest",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.1",
