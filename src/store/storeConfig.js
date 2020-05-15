@@ -2,10 +2,12 @@ import mutations from "./mutations";
 import actions from "./actions";
 import getters from "./getters";
 
+const state = {
+  news: []
+};
+
 export default {
-  state: {
-    news: []
-  },
+  state,
   mutations,
   actions,
   getters
