@@ -81,11 +81,11 @@ describe("ProgressBar.vue", () => {
     const clearIntervalSpy = jest.spyOn(window, "clearInterval");
 
     wrapper.vm.start();
+    const { timerId } = wrapper.vm;
     wrapper.vm.finish();
-
     await wrapper.vm.$nextTick();
 
-    expect(clearIntervalSpy).toHaveBeenCalledWith(wrapper.vm.timerId);
+    expect(clearIntervalSpy).toHaveBeenCalledWith(timerId);
   });
 
   test("add error class when fail method is called", async () => {

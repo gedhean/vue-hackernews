@@ -23,6 +23,10 @@ export default {
   },
   methods: {
     start() {
+      if (typeof this.timerId === "number") {
+        return;
+      }
+
       this.percent = 0;
       this.hidden = false;
 
@@ -32,13 +36,19 @@ export default {
     },
     finish() {
       this.percent = 100;
-      this.hidden = true;
+      this.$nextTick(() => {
+        this.hidden = true;
+      });
 
       clearInterval(this.timerId);
+      this.timerId = null;
     },
     fail() {
       this.error = true;
       this.percent = 100;
+
+      clearInterval(this.timerId);
+      this.timerId = null;
     }
   }
 };
@@ -46,7 +56,7 @@ export default {
 <style lang="scss" scoped>
 .progress-bar {
   height: 5px;
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   background-color: orange;
@@ -59,5 +69,6 @@ export default {
   color: #000;
   text-align: center;
   background-color: rgb(240, 52, 52);
+  height: auto;
 }
 </style>

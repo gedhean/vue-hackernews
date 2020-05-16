@@ -1,6 +1,5 @@
 <template>
   <div id="app" class="container">
-    <!-- <progress-bar progress="50" /> -->
     <item-list />
   </div>
 </template>

@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App";
 import ProgressBar from "./components/ProgressBar.vue";
-import { fetchListData } from "./api/api";
 import store from "./store";
 
 Vue.config.productionTip = false;
@@ -9,21 +8,15 @@ Vue.config.productionTip = false;
 function attachProgressBar() {
   const pbar = new Vue(ProgressBar).$mount();
 
-  Vue.prototype.$pbar = pbar;
+  Vue.prototype.$bar = pbar;
 
   document.body.appendChild(pbar.$el);
 }
 
-function getTopItems() {
-  return fetchListData("top").then(items => items);
-}
+attachProgressBar();
 
-getTopItems().then(items => {
-  attachProgressBar();
-  window.items = items;
-  new Vue({
-    store,
-    el: "#app",
-    render: h => h(App)
-  });
+new Vue({
+  store,
+  el: "#app",
+  render: h => h(App)
 });
