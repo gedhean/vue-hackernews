@@ -4,6 +4,7 @@
       {{ item.title }}
     </a>
     <p class="news-meta">
+      <span class="type">{{ item.type }}</span>
       by
       <span class="author"> {{ item.by }}</span>
       - with score
@@ -22,6 +23,10 @@ export default {
 <style lang="scss" scoped>
 .news-meta {
   font-size: 16px;
+
+  .type {
+    text-transform: capitalize;
+  }
 
   .author {
     text-transform: lowercase;
