@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App";
 import ProgressBar from "./components/ProgressBar.vue";
 import store from "./store";
+import router from "./router";
 
 Vue.config.productionTip = false;
 
@@ -17,6 +18,7 @@ attachProgressBar();
 
 new Vue({
   store,
+  router,
   el: "#app",
   render: h => h(App)
 });
