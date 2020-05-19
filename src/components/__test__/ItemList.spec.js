@@ -1,6 +1,7 @@
 import flushPromises from "flush-promises";
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
+import mergeWith from "lodash.mergewith";
 
 import Item from "./../Item.vue";
 import ItemList from "./../../views/ItemList.vue";
@@ -11,7 +12,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 const defaultStoreConfig = {
-  getters: { displayNews: jest.fn() },
+  getters: { displayNews: jest.fn(), maxPage: jest.fn() },
   actions: { fetchListData: jest.fn(() => Promise.resolve([])) }
 };
 
@@ -26,14 +27,14 @@ function createWrapper(overrides) {
         start: jest.fn(),
         fail: jest.fn(),
         finish: jest.fn()
-      }
+      },
+      $route: { params: { type: "top" } }
     },
     localVue,
-    store: createStore(),
-    ...overrides
+    store: createStore()
   };
 
-  return shallowMount(ItemList, defaultMountOptions);
+  return shallowMount(ItemList, mergeWith(defaultMountOptions, overrides));
 }
 
 describe("ItemList.vue", () => {
@@ -108,5 +109,57 @@ describe("ItemList.vue", () => {
     expect(store.dispatch).toHaveBeenCalledWith("fetchListData", {
       type: "top"
     });
+  });
+
+  test("dispatch fetchListData with $route.params.type", async () => {
+    expect.assertions(1);
+    const store = createStore();
+    store.dispatch = jest.fn(() => Promise.resolve());
+
+    const $route = { params: { type: "new" } };
+    createWrapper({ mocks: { $route }, store });
+    await flushPromises();
+
+    expect(store.dispatch).toHaveBeenCalledWith("fetchListData", {
+      type: "new"
+    });
+  });
+
+  test('render "1/5" when in page 1 of 5', async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const wrapper = createWrapper({ store });
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("1/5");
+  });
+
+  test('render "2/5" when in page 2 of 5', async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const mocks = {
+      $route: { params: { page: 2 } }
+    };
+    const wrapper = createWrapper({ store, mocks });
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("2/5");
+  });
+
+  test("calls $router.replace when page param is greater then maxPage", async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const mocks = {
+      $route: { params: { page: 10 } },
+      $router: { replace: jest.fn() }
+    };
+
+    createWrapper({ store, mocks });
+    await flushPromises();
+
+    expect(mocks.$router.replace).toHaveBeenCalledWith("/top/1");
   });
 });
