@@ -1,5 +1,5 @@
 import flushPromises from "flush-promises";
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount, createLocalVue, RouterLinkStub } from "@vue/test-utils";
 import Vuex from "vuex";
 import mergeWith from "lodash.mergewith";
 
@@ -31,7 +31,8 @@ function createWrapper(overrides) {
       $route: { params: { type: "top" } }
     },
     localVue,
-    store: createStore()
+    store: createStore(),
+    stubs: { RouterLink: RouterLinkStub }
   };
 
   return shallowMount(ItemList, mergeWith(defaultMountOptions, overrides));
@@ -161,5 +162,88 @@ describe("ItemList.vue", () => {
     await flushPromises();
 
     expect(mocks.$router.replace).toHaveBeenCalledWith("/top/1");
+  });
+
+  test("calls $router.replace when page param is invalid", async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const mocks = {
+      $route: { params: { page: "bla" } },
+      $router: { replace: jest.fn() }
+    };
+
+    createWrapper({ store, mocks });
+    await flushPromises();
+
+    expect(mocks.$router.replace).toHaveBeenCalledWith("/top/1");
+  });
+
+  test("render a RouterLink to previous page if it exists", async () => {
+    const mocks = {
+      $route: { params: { page: 2 } }
+    };
+
+    const wrapper = createWrapper({
+      mocks
+    });
+    await flushPromises();
+
+    expect(wrapper.find(RouterLinkStub).props().to).toBe("/top/1");
+    expect(wrapper.find(RouterLinkStub).text()).toBe("<prev");
+  });
+
+  test("render a <a> tag with href blank if there is no previous page", async () => {
+    const mocks = {
+      $route: { params: { page: 1 } }
+    };
+
+    const wrapper = createWrapper({
+      mocks
+    });
+    await flushPromises();
+
+    expect(wrapper.find("a").attributes("href")).toBeUndefined();
+    expect(wrapper.find("a").text()).toBe("<prev");
+  });
+
+  test("render a RouterLink to next page if it exists", async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const mocks = {
+      $route: { params: { page: 3 } }
+    };
+
+    const wrapper = createWrapper({
+      store,
+      mocks
+    });
+    await flushPromises();
+
+    const nextPageLink = wrapper.find(".next").find(RouterLinkStub);
+
+    expect(nextPageLink.props().to).toBe("/top/4");
+    expect(nextPageLink.text()).toBe("next>");
+  });
+
+  test("render a <a> with blank herf if there is no next", async () => {
+    const store = createStore({
+      getters: { maxPage: () => 5 }
+    });
+    const mocks = {
+      $route: { params: { page: 5 } }
+    };
+
+    const wrapper = createWrapper({
+      store,
+      mocks
+    });
+    await flushPromises();
+
+    const nextPageLink = wrapper.find(".next").find("a");
+
+    expect(nextPageLink.attributes("href")).toBeUndefined();
+    expect(nextPageLink.text()).toBe("next>");
   });
 });

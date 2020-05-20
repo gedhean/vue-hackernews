@@ -53,4 +53,9 @@ body {
     margin-left: 8px;
   }
 }
+
+a.disabled {
+  cursor: not-allowed;
+  color: #484848;
+}
 </style>

@@ -20,4 +20,16 @@ describe("Store getters", () => {
 
     expect(maxPage).toBe(3);
   });
+
+  test("displayNews returns 20-40 news if page is 2", () => {
+    const news = Array(40)
+      .fill()
+      .map((_, i) => i);
+    const result = getters.displayNews({
+      news,
+      route: { params: { page: 2 } }
+    });
+
+    expect(result).toEqual(news.slice(20, 40));
+  });
 });

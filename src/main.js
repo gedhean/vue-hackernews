@@ -1,8 +1,11 @@
 import Vue from "vue";
+import { sync } from "vuex-router-sync";
 import App from "./App";
 import ProgressBar from "./components/ProgressBar.vue";
 import store from "./store";
 import router from "./router";
+
+sync(store, router);
 
 Vue.config.productionTip = false;
 
