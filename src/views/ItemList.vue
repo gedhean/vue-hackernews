@@ -32,8 +32,10 @@
 </template>
 <script>
 import Item from "./../components/Item.vue";
+import titleable from "../mixins/titleable";
 
 export default {
+  mixins: [titleable],
   components: {
     Item
   },
@@ -72,6 +74,10 @@ export default {
       ) {
         this.$router.replace("/top/1");
       }
+    },
+    title() {
+      const { type } = this.$route.params;
+      return type.charAt(0).toUpperCase() + type.slice(1);
     }
   }
 };

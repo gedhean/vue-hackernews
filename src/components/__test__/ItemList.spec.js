@@ -246,4 +246,12 @@ describe("ItemList.vue", () => {
     expect(nextPageLink.attributes("href")).toBeUndefined();
     expect(nextPageLink.text()).toBe("next>");
   });
+
+  test("set document.title with captalized type route params", () => {
+    createWrapper({
+      $route: { params: { type: "top" } }
+    });
+
+    expect(document.title).toBe("HN | Top");
+  });
 });
