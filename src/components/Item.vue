@@ -4,19 +4,27 @@
       {{ item.title }}
     </a>
     <p class="news-meta">
-      <span class="type">{{ item.type }}</span>
+      <!-- <span class="type">{{ item.type }}</span> -->
       by
       <span class="author"> {{ item.by }}</span>
-      - with score
+      <span class="time" v-if="item.time"> {{ item.time | timeAgo }} ago</span>
+      <span class="domain"> ({{ item.url | host }})</span>
+      - score
       <span class="score">{{ item.score || 0 }}</span>
     </p>
   </li>
 </template>
 
 <script>
+import timeAgo from "../utils/filters/timeAgo";
+import host from "../utils/filters/host";
 export default {
   props: {
     item: Object
+  },
+  filters: {
+    timeAgo,
+    host
   }
 };
 </script>
@@ -30,6 +38,10 @@ export default {
 
   .author {
     text-transform: lowercase;
+    font-weight: 100;
+  }
+
+  .time {
     font-style: italic;
   }
 
