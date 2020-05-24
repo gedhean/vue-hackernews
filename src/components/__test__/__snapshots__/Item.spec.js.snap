@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Item.vue render correctly 1`] = `
+<li><a href="https://gedhean.dev/tdd" target="_blank" class="title">
+    learning tdd with vue.js
+  </a>
+  <p class="news-meta">
+    by
+    <span class="author"> jedi</span> <span class="time"> 2 minutes ago</span> <span class="domain"> (gedhean.dev)</span>
+    - score
+    <span class="score">1000</span></p>
+</li>
+`;

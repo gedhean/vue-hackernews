@@ -57,4 +57,25 @@ describe("Item.vue", () => {
 
     expect(wrapper.text()).toContain("example.com");
   });
+
+  test("render correctly", () => {
+    const dateNow = jest.spyOn(Date, "now");
+    const dateNowTime = new Date("2020");
+    dateNow.mockImplementation(() => dateNowTime);
+
+    const item = {
+      id: 2812,
+      by: "jedi",
+      title: "learning tdd with vue.js",
+      url: "https://gedhean.dev/tdd",
+      score: 1000,
+      time: Date.now() / 1000 - 120,
+      type: "story"
+    };
+
+    const wrapper = shallowMount(Item, { propsData: { item } });
+
+    dateNow.mockRestore();
+    expect(wrapper).toMatchSnapshot();
+  });
 });
