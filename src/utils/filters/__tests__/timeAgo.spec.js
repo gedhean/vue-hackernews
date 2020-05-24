@@ -45,4 +45,8 @@ describe("timeago filter", () => {
   test("returns 20 day", () => {
     expect(timeago(unixNow - (days(20) + hours(2)))).toBe("20 days");
   });
+
+  test("returns 31 day", () => {
+    expect(timeago(unixNow - (days(31) + hours(2)))).toBe("31 days");
+  });
 });

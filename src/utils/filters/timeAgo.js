@@ -3,7 +3,6 @@ export default function timeAgo(unixTimestamp) {
   const ONE_MINUTE_IN_SECS = 60;
   const ONE_HOUR_IN_SECS = 60 * ONE_MINUTE_IN_SECS;
   const ONE_DAY_IN_SECS = 24 * ONE_HOUR_IN_SECS;
-  const ONE_MONTH_IN_SECS = 30 * ONE_DAY_IN_SECS;
 
   if (delta < ONE_MINUTE_IN_SECS) {
     return `${delta} second${delta > 1 ? "s" : ""}`;
@@ -15,7 +14,7 @@ export default function timeAgo(unixTimestamp) {
     const hours = Math.floor(delta / ONE_HOUR_IN_SECS);
     const plural = hours > 1 ? "s" : "";
     return `${hours} hour${plural}`;
-  } else if (delta >= ONE_DAY_IN_SECS && delta < ONE_MONTH_IN_SECS) {
+  } else if (delta >= ONE_DAY_IN_SECS) {
     const days = Math.floor(delta / ONE_DAY_IN_SECS);
     const plural = days > 1 ? "s" : "";
     return `${days} day${plural}`;
