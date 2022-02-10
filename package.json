@@ -39,7 +39,7 @@
     "lint-staged": "^9.5.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.mergewith": "^4.6.2",
-    "node-sass": "^4.14.0",
+    "node-sass": "^7.0.0",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "vue-jest": "^3.0.5",
